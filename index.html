@@ -449,6 +449,10 @@
       Дезинфицирующие
       <span class="count-badge" id="badge-dezy">0</span>
     </button>
+    <button class="tab-btn" onclick="switchTab('raznoe', this)" type="button">
+      Разное
+      <span class="count-badge" id="badge-raznoe">0</span>
+    </button>
   </div>
 
   <div class="section active" id="section-moushie">
@@ -461,6 +465,11 @@
   <div class="section" id="section-dezy">
     <div class="section-label">DEZAR SYSTEM — Дезинфицирующие средства</div>
     <div class="product-grid" id="grid-dezy"></div>
+  </div>
+
+  <div class="section" id="section-raznoe">
+    <div class="section-label">Разное — Сырьё и вспомогательные материалы</div>
+    <div class="product-grid" id="grid-raznoe"></div>
   </div>
 
   <div class="extra-fields">
@@ -537,6 +546,18 @@ var products = {
     { id: 'dezariksin',     name: 'Дезариксин',     desc: 'Дезинфекция поверхностей и ИМН в ЛПУ',                          volumes: ['1л','5л','10л','20л'] },
     { id: 'dezarimax',      name: 'Дезаримакс',     desc: 'Дезинфекция поверхностей, ЧАС, в т.ч. фармпредприятия',         volumes: ['1л','5л','10л','20л'] },
     { id: 'dezarekt_forte', name: 'Дезарект-Форте', desc: 'Дезинфекция поверхностей и ИМН, ЧАС + гуанидин',                volumes: ['1л','5л','10л','20л'] }
+  ],
+  raznoe: [
+    { id: 'absk_las',        name: 'Алкилбензолсульфокислота (АБСК) LAS', desc: 'Поверхностно-активное вещество, анионное ПАВ',          volumes: ['5кг'] },
+    { id: 'glitserin',       name: 'Глицерин',                            desc: 'Увлажнитель, растворитель',                            volumes: ['5кг'] },
+    { id: 'kaltsiy_hlor',    name: 'Кальций хлористый безводный',          desc: 'Неорганическая соль, осушитель',                       volumes: ['25кг мешок'] },
+    { id: 'kislota_limon',   name: 'Кислота лимонная моногидрат',          desc: 'Органическая кислота, регулятор кислотности',          volumes: ['25кг мешок'] },
+    { id: 'kislota_molochn', name: 'Молочная кислота 80% E270',            desc: 'Органическая кислота, консервант',                     volumes: ['25кг'] },
+    { id: 'natriy_gidr',     name: 'Натрия гидроксид (раствор) 46-48%',   desc: 'Щёлочь, основное сырьё для щелочных составов',         volumes: ['28кг'] },
+    { id: 'perekis_vod',     name: 'Перекись водорода 60%',                desc: 'Окислитель, дезинфектант',                             volumes: ['12кг'] },
+    { id: 'perkarbоnat',     name: 'Перкарбонат натрия',                   desc: 'Кислородный отбеливатель',                             volumes: ['25кг мешок'] },
+    { id: 'edta_4na',        name: 'Тетранатриевая соль EDTA (EDTA-4NA)',  desc: 'Комплексообразователь, умягчитель воды',               volumes: ['25кг мешок'] },
+    { id: 'tripolifosf',     name: 'Триполифосфат натрия',                 desc: 'Строитель, умягчитель воды, диспергатор',              volumes: ['25кг мешок'] }
   ]
 };
 
@@ -577,6 +598,7 @@ function renderGrid(containerId, items) {
 renderGrid('grid-base',   products.base);
 renderGrid('grid-helper', products.helper);
 renderGrid('grid-dezy',   products.dezy);
+renderGrid('grid-raznoe', products.raznoe);
 
 function changeQty(id, delta) {
   var input = document.getElementById('qty-' + id);
@@ -601,7 +623,7 @@ function updateState(id) {
 }
 
 function allProducts() {
-  return products.base.concat(products.helper, products.dezy);
+  return products.base.concat(products.helper, products.dezy, products.raznoe);
 }
 
 function findProduct(id) {
@@ -640,6 +662,11 @@ function updateBadges() {
   var badge = document.getElementById('badge-dezy');
   badge.textContent = dezyCount;
   badge.className = 'count-badge' + (dezyCount > 0 ? ' visible' : '');
+  var raznoeCount = 0;
+  for (var i = 0; i < products.raznoe.length; i++) { if (state[products.raznoe[i].id]) raznoeCount++; }
+  var badgeR = document.getElementById('badge-raznoe');
+  badgeR.textContent = raznoeCount;
+  badgeR.className = 'count-badge' + (raznoeCount > 0 ? ' visible' : '');
 }
 
 function buildOrderText() {
