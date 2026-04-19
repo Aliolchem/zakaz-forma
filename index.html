@@ -3,30 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>АЛИОЛХИМ — Форма заявки</title>
+<title>АЛИОЛХИМ — Форма заявки v2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy:        #041F3C;
     --navy-deep:   #021529;
+    --navy-mid:    #0A3560;
     --accent:      #1DB2E3;
+    --accent-dim:  #1490BB;
     --accent-light:#E3F6FD;
+    --accent-pale: #F0FAFF;
     --white:       #FFFFFF;
-    --gray-mid:    #8C8C8B;
-    --gray-light:  #F2F4F6;
-    --gray-border: #D8DCE0;
-    --gray-text:   #4A4A4A;
-    --success:     #2E7D32;
-    --font: 'Roboto', Arial, sans-serif;
+    --bg:          #EEF1F5;
+    --bg-warm:     #F6F7F9;
+    --gray-mid:    #8A9AB0;
+    --gray-light:  #E8ECF1;
+    --gray-border: #D0D8E4;
+    --gray-text:   #3D4F63;
+    --success:     #1A7A3C;
+    --warn:        #C84B3C;
+    --font:        'IBM Plex Sans', Helvetica, Arial, sans-serif;
+    --mono:        'IBM Plex Mono', 'Courier New', monospace;
+    --transition:  0.18s ease;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
     font-family: var(--font);
-    background: var(--gray-light);
+    background: var(--bg);
     color: var(--navy);
     min-height: 100vh;
     -webkit-text-size-adjust: 100%;
@@ -132,7 +140,7 @@
     background: var(--accent-light);
   }
 
-  .product-name { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .product-name { font-size: 13px; font-weight: 600; color: var(--navy); font-family: var(--mono); letter-spacing: 0.3px; }
   .product-desc { font-size: 11px; color: var(--gray-mid); line-height: 1.4; margin-top: 2px; }
 
   .product-controls { display: flex; align-items: center; gap: 8px; }
@@ -187,7 +195,8 @@
     transition: background 0.1s;
   }
 
-  .qty-btn:active { background: var(--accent-light); color: var(--accent); }
+  .qty-btn:hover { background: var(--accent-light); color: var(--accent); }
+  .qty-btn:active { background: var(--accent); color: var(--white); }
 
   .qty-input {
     width: 52px;
@@ -320,7 +329,8 @@
     transition: background 0.15s, color 0.15s;
   }
 
-  .btn-copy { flex: 1; background: var(--navy); color: var(--white); }
+  .btn-copy { flex: 1; background: var(--navy); color: var(--white); border-right: 1px solid rgba(255,255,255,0.15); }
+  .btn-copy:hover { background: var(--navy-mid); }
   .btn-copy:active { background: var(--navy-deep); }
 
   .btn-email { flex: 1; background: var(--white); color: var(--navy); border: 2px solid var(--navy); }
@@ -399,8 +409,268 @@
   .contacts-bar a { color: var(--accent); text-decoration: none; }
   .contacts-bar a:hover { color: var(--white); }
 
+
+
+  /* VESSEL VISUALISATION */
+  .calc-visual {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 0 8px;
+    flex-wrap: wrap;
+  }
+  .cv-vessel { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .cv-vessel-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .cv-vessel-icon img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    display: block;
+  }
+  .cv-vessel-icon svg {
+    width: 72px;
+    height: 72px;
+    display: block;
+  }
+  .cv-vessel-label {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    min-width: 72px;
+    text-align: center;
+  }
+  .cv-vessel-name {
+    font-size: 10px;
+    color: var(--gray-mid);
+    text-align: center;
+    letter-spacing: 0.5px;
+    max-width: 88px;
+    line-height: 1.4;
+  }
+  .cv-plus, .cv-equals {
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--gray-mid);
+    padding-bottom: 46px;
+  }
+  .calc-result-line {
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.6;
+  }
+  .calc-result-line strong {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+  .calc-result-line .calc-warn { color: #EB5E5B; font-size: 12px; }
+  .calc-result-placeholder { font-size: 12px; color: var(--gray-mid); font-style: italic; }
+
+
+  /* CALCULATOR */
+  .calc-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 12px 0;
+  }
+
+  .calc-section-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    padding: 28px 0 10px;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .calc-mode-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+    border: 1.5px solid var(--navy);
+    flex-direction: column;
+  }
+
+  .calc-mode-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-bottom: 1.5px solid var(--navy);
+    background: var(--white);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--navy);
+    text-align: center;
+    transition: background 0.15s, color 0.15s;
+    -webkit-appearance: none;
+  }
+
+  .calc-mode-btn:last-child { border-bottom: none; }
+  .calc-mode-btn.active { background: var(--navy); color: var(--white); }
+  .calc-mode-btn:not(.active):hover { background: var(--accent-light); }
+
+  .calc-mode { display: none; }
+  .calc-mode.active { display: block; }
+
+  .calc-desc {
+    font-size: 12px;
+    color: var(--gray-mid);
+    margin-bottom: 16px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .calc-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .calc-field-group label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 6px;
+  }
+
+  .calc-field-group input {
+    width: 100%;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 400;
+    padding: 10px 12px;
+    border: 1.5px solid var(--gray-border);
+    outline: none;
+    color: var(--navy);
+    background: var(--white);
+    border-radius: 0;
+    -webkit-appearance: none;
+    height: 46px;
+    min-width: 0;
+  }
+
+  .calc-field-group input:focus { border-color: var(--accent); }
+
+  .calc-input-row {
+    display: flex;
+    gap: 0;
+  }
+
+  .calc-input-row input {
+    flex: 1;
+    border-right: none;
+  }
+
+  .calc-input-row select {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 0 10px;
+    border: 1.5px solid var(--gray-border);
+    background: var(--bg);
+    color: var(--navy);
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    height: 46px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .calc-result {
+    background: var(--navy);
+    color: var(--white);
+    padding: 16px;
+    margin-bottom: 24px;
+    border-top: 3px solid var(--accent);
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .calc-result-placeholder {
+    font-size: 12px;
+    color: var(--gray-mid);
+    font-style: italic;
+  }
+
+  .calc-result-line {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.5;
+  }
+
+  .calc-result-line strong {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .calc-result-line .calc-warn {
+    color: #EB5E5B;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* BUBBLES */
+  .bubbles-overlay {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .bubble {
+    position: absolute;
+    bottom: -30px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, rgba(255,255,255,0.7) 0%, rgba(200,240,255,0.25) 50%, rgba(255,255,255,0.05) 100%);
+    border: 1.5px solid rgba(255,255,255,0.35);
+    box-shadow: inset 0 1px 3px rgba(255,255,255,0.4), 0 0 6px rgba(29,178,227,0.3);
+    animation: rise linear infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+    6%   { opacity: 1; }
+    90%  { opacity: 0.8; }
+    100% { transform: translateY(-200px) translateX(var(--drift)) scale(var(--end-scale)); opacity: 0; }
+  }
+
   /* DESKTOP */
   @media (min-width: 640px) {
+    .calc-wrap { padding: 0 24px; }
+    .calc-mode-tabs { flex-direction: row; }
+    .calc-mode-btn { border-bottom: none; border-right: 1.5px solid var(--navy); }
+    .calc-mode-btn:last-child { border-right: none; }
+    .calc-fields { flex-direction: row; flex-wrap: wrap; }
+    .calc-field-group { flex: 1; min-width: 160px; }
+  }
     .main { padding: 28px 24px 60px; }
     .section-tabs { flex-direction: row; border: 1.5px solid var(--navy); }
     .tab-btn { flex: none; padding: 10px 28px; min-height: auto; border-bottom: none; border-right: 1.5px solid var(--navy); }
@@ -425,7 +695,7 @@
     .send-area { flex-direction: row; flex-wrap: wrap; align-items: stretch; }
     .send-row-main { flex: 1; }
     .btn-email { background: var(--accent); color: var(--white); border: none; }
-    .btn-email:hover { background: #18A0CE; }
+    .btn-email:hover { background: var(--accent-dim); }
     .btn-copy:hover { background: var(--navy-deep); }
     .btn-reset { align-self: stretch; height: auto; }
   }
@@ -436,6 +706,7 @@
 <div class="header">
   <div class="header-plashka">
     <img src="data:image/png;base64,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ej/hONE/56XH/fn/AOvXmNFH1ufkH9k0O7/D/I9O/wCE40T/AJ6XH/fn/wCvR/wnGif89Lj/AL8//XrzGij63PyD+yaHd/h/kenf8Jxon/PS4/78/wD16P8AhONE/wCelx/35/8Ar15jRR9bn5B/ZNDu/wAP8j07/hONE/56XH/fn/69H/CcaJ/z0uP+/P8A9evMaKPrc/IP7Jod3+H+R6d/wnGif89Lj/vz/wDXo/4TjRP+elx/35/+vXmNFH1ufkH9k0O7/D/I9O/4TjRP+elx/wB+f/r0f8Jxon/PS4/78/8A168xoo+tz8g/smh3f4f5Hp3/AAnGif8APS4/78//AF6P+E40T/npcf8Afn/69eY0UfW5+Qf2TQ7v8P8AI9O/4TjRP+elx/35/wDr0f8ACcaJ/wA9Lj/vz/8AXrzGij63PyD+yaHd/h/kenf8Jxon/PS4/wC/P/16P+E40T/npcf9+f8A69eY0UfW5+Qf2TQ7v8P8gooorlPUCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACjKg4LKD6EgU5EeWRI41LSMQqqBkkk4AH1JAr698M+ENN0Tw1p2my2NtLLBCqySNErFnIyxyR3JNROagkXCHMfIHBGQQR7UV6L8ZvDa6F42NzbwrHaajEJkVFwquMK4AHA6A/wDAq86qotSV0KSs7MKTI9R+dDfdbHXB/lX13o/g7w0dEsGl8P6W7m3j3M1nGSTtHJOOT71M5qG6CEObY+RMj1H50ZHqPzr6tz8LgcE+Es/9u9alp4a8G6jaJdWWi6Hc2752Sw2sTK2Dg4IBBwQfxFZ+3XYv2T7nx/SZHqPzrpvH1tBZ/EHWra1gjhgjutqRxqFVRheABwByeBX0pqvg7wzHod7JH4e0pXW3kZWFnGCCFJBBxwc1cqqSTtuJU23Y+RqKReVUn0H8q9a+DHgOHXb2bXNVtUn0+2zFDFKoZZZSOSQeCFB79yPSqlJJXZCi27I8lyPWlr6U+KvhjQdP+G+rXVlounW1xGItssNsiMv71QcEDI4JH41866fp91quo2+n2ULTXNw4jijXqSf5DuT0ABNKE1JXHKDiyrSZXONy5+or6a8IfBzQdCtYptWt4tU1EgF2mGYkPoqHggepBJ68dK6VB4Ju5/7OQaBNLnb9mXyWbPptHP4YqHXjfQtUnY+QaK+h/HPwX0zULOW98NQrZX6At9mU4im9gD91vQjjPUdx89SRvFI8ciMkiMVZWGCpBwQR2IIxirhNS2IlBx3G0mR6j86774Padaap8QIIL61guoBbSsY5ow6kgAAkEEcZr3/UNA8EaTAs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kK4rXdau/EOt3eq3zbp7lyxGchR0Cj2AAA+ldP8ACbWNO0Lx1Ffandx2tsttKpkkJABIGBwOpwatQ5abXUhy5po9W+P/APyItl/2EY//AEXJXKfs+f8AIwa1/wBesf8A6Ga0PjL4w8PeIfCNra6Tq1teTpfJI0cTEnaEcE9OmSB+Nc38FfEWkeHda1SbV7+GzjltkVGlOAxDEkDj0qIp+zaKdvaHT/tEKDaeH2PXzJx+YT/Cuy8A6hD42+FsNveNvdrd7C645yBtz9SpU/jXm/xs8U6H4jtNGTR9Tt7xoJJTIImyVBCgZ49jVP4L+NLDw3fajY6vex2tlcosscknCiRTgj2JU/8AjtCi3T9B81p+p6v4tu4fAPwrlhtHw1varZ2xxgmRhtDfXqx+hrg/2d1HneIW7hbcD6fvP8KyvjT4307xG+mabo97HdWcIaeaSI5UyH5VHbkDJ/4EKPgl4m0Xw42tnWNSgsvP8jyvOON2N+ccdsj8xRGL5G3uwbXOkX/2hv8AkI6D/wBcpv8A0Ja8Wr1X42eJNG8RXujvpGowXiwxyiQxHO0kqRnjvg/lXlVaUbqFmZ1PiCiiitTMKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAozjviiup8C21s2oapqNxBHcf2Vps19FDKu5HkXaqbh3ALA474pPRXGt7HLZ9/eiu/0bXdQ8Z22taVr9x9tVNOnvLWWRFDW8sQDAqQBhSMgr0wR6Vh+A9MtdZ8aadaX0fmWuZJpYyeJFjRpNp9jtAPsTS5t79B8v4nOZ6HPXp70vJ4GTXXxfEPUbx7iDXFW+0i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T0JwfYVP4Q1jTdKk1eLVftYttQ06Sz3Wsau6FmQ5wxAIwp79xXN0Uculgvrc6q+1nQ7LwxdaLoKajN9unimubm+WOMgR52qqqT3Ykkn2xUXh3xP/AMIzo2qNp7zw61dmKKK5QDEUIO58EkncxCjGMYHWuaopKKtYfNrc6648b3eueGNS0vxFdXV9OzxT2EzBT5MikhgcY+VlJHGeQOK5GiimklsJtvcKKKKYgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKv/2Jqv8A0Drv/vy3+FH9iar/ANA67/78t/hTsybruUKKv/2Jqv8A0Drv/vy3+FH9iar/ANA67/78t/hRZhddyhRV/wDsTVf+gdd/9+W/wo/sTVf+gdd/9+W/woswuu5Qoq//AGJqv/QOu/8Avy3+FH9iar/0Drv/AL8t/hRZhddyhRV/+xNV/wCgdd/9+W/wo/sTVf8AoHXf/flv8KLMLruUKKv/ANiar/0Drv8A78t/hR/Ymq/9A67/AO/Lf4UWYXXcoUVf/sTVf+gdd/8Aflv8KP7E1X/oHXf/AH5b/CizC67lCir/APYmq/8AQOu/+/Lf4Uf2Jqv/AEDrv/vy3+FFmF13KFFX/wCxNV/6B13/AN+W/wAKP7E1X/oHXf8A35b/AAoswuu5Qoq//Ymq/wDQOu/+/Lf4Uf2Jqv8A0Drv/vy3+FFmF13KFFX/AOxNV/6B13/35b/Cj+xNV/6B13/35b/CizC67lCir/8AYmq/9A67/wC/Lf4Uf2Jqv/QOu/8Avy3+FFmF13KFFX/7E1X/AKB13/35b/Cj+xNV/wCgdd/9+W/woswuu5Qoq/8A2Jqv/QOu/wDvy3+FH9iar/0Drv8A78t/hRZhddyhRV/+xNV/6B13/wB+W/wo/sTVf+gdd/8Aflv8KLMLruUKKv8A9iar/wBA67/78t/hR/Ymq/8AQOu/+/Lf4UWYXXcoUVf/ALE1X/oHXf8A35b/AAo/sTVf+gdd/wDflv8ACizC67lCir/9iar/ANA67/78t/hR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/kv/APZV3VFH16v/ADfgv8g/srCfyfi/8zhf+Fc/9Rb/AMl//sqP+Fc/9Rb/AMl//sq7qij69X/m/Bf5B/ZWE/k/F/5nC/8ACuf+ot/5L/8A2VH/AArn/qLf+S//ANlXdUUfXq/834L/ACD+ysJ/J+L/AMzhf+Fc/wDUW/8AJf8A+yo/4Vz/ANRb/wAl/wD7Ku6oo+vV/wCb8F/kH9lYT+T8X/mcL/wrn/qLf+S//wBlR/wrn/qLf+S//wBlXdUUfXq/834L/IP7Kwn8n4v/ADOF/wCFc/8AUW/8l/8A7Kj/AIVz/wBRb/yX/wDsq7qij69X/m/Bf5B/ZWE/k/F/5nC/8K5/6i3/AJL/AP2VH/Cuf+ot/wCS/wD9lXdUUfXq/wDN+C/yD+ysJ/J+L/zOF/4Vz/1Fv/Jf/wCyo/4Vz/1Fv/Jf/wCyruqKPr1f+b8F/kH9lYT+T8X/AJnC/wDCuf8AqLf+S/8A9lR/wrn/AKi3/kv/APZV3VFH16v/ADfgv8g/srCfyfi/8zhf+Fc/9Rb/AMl//sqP+Fc/9Rb/AMl//sq7qij69X/m/Bf5B/ZWE/k/F/5nC/8ACuf+ot/5L/8A2VH/AArn/qLf+S//ANlXdUUfXq/834L/ACD+ysJ/J+L/AMzhf+Fc/wDUW/8AJf8A+yo/4Vz/ANRb/wAl/wD7Ku6oo+vV/wCb8F/kH9lYT+T8X/mcL/wrn/qLf+S//wBlR/wrn/qLf+S//wBlXdUUfXq/834L/IP7Kwn8n4v/ADOF/wCFc/8AUW/8l/8A7Kj/AIVz/wBRb/yX/wDsq7qij69X/m/Bf5B/ZWE/k/F/5nC/8K5/6i3/AJL/AP2VH/Cuf+ot/wCS/wD9lXdUUfXq/wDN+C/yD+ysJ/J+L/zOF/4Vz/1Fv/Jf/wCyo/4Vz/1Fv/Jf/wCyruqKPr1f+b8F/kH9lYT+T8X/AJnC/wDCuf8AqLf+S/8A9lR/wrn/AKi3/kv/APZV3VFH16v/ADfgv8g/srCfyfi/8zhf+Fc/9Rb/AMl//sqP+Fc/9Rb/AMl//sq7qij69X/m/Bf5B/ZWE/k/F/5nC/8ACuf+ot/5L/8A2VH/AArn/qLf+S//ANlXdUUfXq/834L/ACD+ysJ/J+L/AMzhf+Fc/wDUW/8AJf8A+yo/4Vz/ANRb/wAl/wD7Ku6oo+vV/wCb8F/kH9lYT+T8X/mFFFFch6IUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf//Z" alt="АЛИОЛХИМ" class="plashka-img">
+    <div class="bubbles-overlay" id="bubblesOverlay"></div>
     <div class="header-form-label">Форма заявки</div>
   </div>
 </div>
@@ -513,6 +784,195 @@
   <div class="notice">
     <strong>Скопировать заявку</strong> — вставьте в любую почту или мессенджер.<br>
     <strong>Открыть почту</strong> — работает если на устройстве настроено приложение Почта.
+  </div>
+
+</div>
+
+<!-- КАЛЬКУЛЯТОР РАБОЧЕГО РАСТВОРА v2 -->
+<div class="calc-wrap">
+  <div class="calc-section-label">Калькулятор рабочего раствора</div>
+
+  <div class="calc-mode-tabs">
+    <button class="calc-mode-btn active" onclick="switchCalcMode('dilute', this)" type="button">Приготовление раствора</button>
+    <button class="calc-mode-btn" onclick="switchCalcMode('adjust', this)" type="button">Корректировка концентрации</button>
+  </div>
+
+  <!-- РЕЖИМ 1: Приготовление нужного объёма раствора -->
+  <div class="calc-mode active" id="calc-dilute">
+    <div class="calc-desc">Укажите нужный объём рабочего раствора и желаемую концентрацию. Калькулятор покажет сколько взять концентрата и воды.</div>
+    <div class="calc-fields">
+      <div class="calc-field-group">
+        <label>Концентрация препарата (%)</label>
+        <input type="number" id="d-conc-stock" min="1" max="100" step="0.1" placeholder="100" value="100" oninput="calcDilute()">
+      </div>
+      <div class="calc-field-group">
+        <label>Нужная концентрация раствора</label>
+        <div class="calc-input-row">
+          <input type="number" id="d-conc-target" min="0.01" step="0.1" placeholder="2" oninput="calcDilute()">
+          <select id="d-unit-target" onchange="calcDilute()">
+            <option value="pct">%</option>
+            <option value="mlL">мл/л</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-field-group">
+        <label>Нужный объём раствора (л)</label>
+        <input type="number" id="d-volume" min="0.1" step="0.1" placeholder="10" oninput="calcDilute()">
+      </div>
+    </div>
+
+    <!-- Визуализация -->
+    <div class="calc-visual" id="d-visual">
+      <div class="cv-vessel">
+        <div class="cv-vessel-icon" id="d-icon-conc"><svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 10 L10 62 Q10 66 14 66 L52 66 Q56 66 56 62 L56 10 Z" fill="#FDD835"/>
+  <path d="M10 10 L10 62 Q10 66 14 66 L52 66 Q56 66 56 62 L56 10 Z" fill="none" stroke="#1A237E" stroke-width="2.8" stroke-linejoin="round"/>
+  <path d="M56 20 Q64 20 64 30 Q64 40 56 40" fill="none" stroke="#1A237E" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="34" y1="22" x2="50" y2="22" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="30" x2="50" y2="30" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="34" y1="38" x2="50" y2="38" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="46" x2="50" y2="46" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="34" y1="54" x2="50" y2="54" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+</svg></div>
+        <div class="cv-vessel-label" id="d-label-conc">—</div>
+        <div class="cv-vessel-name">Концентрат</div>
+      </div>
+      <div class="cv-plus">+</div>
+      <div class="cv-vessel">
+        <div class="cv-vessel-icon" id="d-icon-water"><svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 14 Q36 6 50 14" fill="none" stroke="#2D3A8C" stroke-width="4" stroke-linecap="round"/>
+  <path d="M18 20 L12 62 Q12 66 16 66 L56 66 Q60 66 60 62 L54 20 Z" fill="#C8E6FA"/>
+  <path d="M18 20 L12 62 Q12 66 16 66 L56 66 Q60 66 60 62 L54 20 Z" fill="none" stroke="#2D3A8C" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M14 46 Q18 42 22 46 Q26 50 30 46 Q34 42 38 46 Q42 50 46 46 Q50 42 54 46 L60 58 Q60 66 56 66 L16 66 Q12 66 12 58 Z" fill="#6BB8F0"/>
+  <path d="M14 46 Q18 42 22 46 Q26 50 30 46 Q34 42 38 46 Q42 50 46 46 Q50 42 54 46" fill="none" stroke="#5AA8E0" stroke-width="1.5"/>
+  <rect x="18" y="20" width="36" height="5" rx="2" fill="#B0D4F0" opacity="0.6"/>
+</svg></div>
+        <div class="cv-vessel-label" id="d-label-water">—</div>
+        <div class="cv-vessel-name">Вода</div>
+      </div>
+      <div class="cv-equals">=</div>
+      <div class="cv-vessel">
+        <div class="cv-vessel-icon" id="d-icon-result"><svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="14" width="52" height="44" rx="8" fill="#69F0AE"/>
+  <rect x="10" y="14" width="26" height="44" rx="0" fill="#00C853" opacity="0.4"/>
+  <rect x="10" y="14" width="52" height="44" rx="8" fill="none" stroke="#1B5E20" stroke-width="2.5"/>
+  <rect x="6" y="18" width="6" height="36" rx="3" fill="#1B5E20"/>
+  <rect x="60" y="18" width="6" height="36" rx="3" fill="#1B5E20"/>
+  <rect x="8" y="28" width="56" height="4" rx="2" fill="#1B5E20" opacity="0.3"/>
+  <rect x="8" y="40" width="56" height="4" rx="2" fill="#1B5E20" opacity="0.3"/>
+  <circle cx="36" cy="36" r="13" fill="white" opacity="0.88"/>
+  <circle cx="36" cy="36" r="13" fill="none" stroke="#1B5E20" stroke-width="1.5"/>
+  <path d="M36 26 Q40 32 36 44 Q32 32 36 26 Z" fill="#A5D6A7" opacity="0.9"/>
+  <path d="M36 26 Q40 32 36 44 Q32 32 36 26 Z" fill="none" stroke="#1B5E20" stroke-width="1"/>
+</svg></div>
+        <div class="cv-vessel-label" id="d-label-result">—</div>
+        <div class="cv-vessel-name">Рабочий раствор</div>
+      </div>
+    </div>
+
+    <div class="calc-result" id="d-result">
+      <span class="calc-result-placeholder">Заполните поля выше</span>
+    </div>
+  </div>
+
+  <!-- РЕЖИМ 2: Корректировка концентрации -->
+  <div class="calc-mode" id="calc-adjust">
+    <div class="calc-desc">Есть раствор с известной концентрацией. Нужно изменить её — добавить концентрат (повысить) или воду (понизить). Укажите параметры, калькулятор посчитает что добавить.</div>
+    <div class="calc-fields">
+      <div class="calc-field-group">
+        <label>Концентрация препарата (%)</label>
+        <input type="number" id="a-conc-stock" min="1" max="100" step="0.1" placeholder="100" value="100" oninput="calcAdjust()">
+      </div>
+      <div class="calc-field-group">
+        <label>Текущая концентрация</label>
+        <div class="calc-input-row">
+          <input type="number" id="a-conc-current" min="0" step="0.1" placeholder="1" oninput="calcAdjust()">
+          <select id="a-unit-current" onchange="calcAdjust()">
+            <option value="pct">%</option>
+            <option value="mlL">мл/л</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-field-group">
+        <label>Целевая концентрация</label>
+        <div class="calc-input-row">
+          <input type="number" id="a-conc-target" min="0.01" step="0.1" placeholder="2" oninput="calcAdjust()">
+          <select id="a-unit-target" onchange="calcAdjust()">
+            <option value="pct">%</option>
+            <option value="mlL">мл/л</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-field-group">
+        <label>Объём имеющегося раствора (л)</label>
+        <input type="number" id="a-volume" min="0.1" step="0.1" placeholder="10" oninput="calcAdjust()">
+      </div>
+    </div>
+
+    <!-- Визуализация -->
+    <div class="calc-visual" id="a-visual">
+      <div class="cv-vessel">
+        <div class="cv-vessel-icon" id="a-icon-existing"><svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="14" width="52" height="44" rx="8" fill="#FFD740"/>
+  <rect x="10" y="14" width="26" height="44" rx="0" fill="#FFB300" opacity="0.4"/>
+  <rect x="10" y="14" width="52" height="44" rx="8" fill="none" stroke="#7A4200" stroke-width="2.5"/>
+  <rect x="6" y="18" width="6" height="36" rx="3" fill="#7A4200"/>
+  <rect x="60" y="18" width="6" height="36" rx="3" fill="#7A4200"/>
+  <rect x="8" y="28" width="56" height="4" rx="2" fill="#7A4200" opacity="0.3"/>
+  <rect x="8" y="40" width="56" height="4" rx="2" fill="#7A4200" opacity="0.3"/>
+  <circle cx="36" cy="36" r="13" fill="white" opacity="0.88"/>
+  <circle cx="36" cy="36" r="13" fill="none" stroke="#7A4200" stroke-width="1.5"/>
+  <path d="M36 26 Q40 32 36 44 Q32 32 36 26 Z" fill="#FFE082" opacity="0.9"/>
+  <path d="M36 26 Q40 32 36 44 Q32 32 36 26 Z" fill="none" stroke="#7A4200" stroke-width="1"/>
+</svg></div>
+        <div class="cv-vessel-label" id="a-label-existing">—</div>
+        <div class="cv-vessel-name">Имеющийся раствор</div>
+      </div>
+      <div class="cv-plus" id="a-op-sign">+</div>
+      <div class="cv-vessel">
+        <div class="cv-vessel-icon" id="a-icon-add"><svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 10 L10 62 Q10 66 14 66 L52 66 Q56 66 56 62 L56 10 Z" fill="#FDD835"/>
+  <path d="M10 10 L10 62 Q10 66 14 66 L52 66 Q56 66 56 62 L56 10 Z" fill="none" stroke="#1A237E" stroke-width="2.8" stroke-linejoin="round"/>
+  <path d="M56 20 Q64 20 64 30 Q64 40 56 40" fill="none" stroke="#1A237E" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="34" y1="22" x2="50" y2="22" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="30" x2="50" y2="30" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="34" y1="38" x2="50" y2="38" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="38" y1="46" x2="50" y2="46" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+  <line x1="34" y1="54" x2="50" y2="54" stroke="#1A237E" stroke-width="3" stroke-linecap="round"/>
+</svg></div>
+        <div class="cv-vessel-label" id="a-label-add">—</div>
+        <div class="cv-vessel-name" id="a-name-add">Добавить</div>
+      </div>
+      <div class="cv-equals">=</div>
+      <div class="cv-vessel">
+        <div class="cv-vessel-icon">
+          <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <!-- Крышка -->
+  <rect x="24" y="4" width="24" height="8" rx="3" fill="#2E7D32" opacity="0.7"/>
+  <rect x="28" y="2" width="16" height="5" rx="2" fill="#2E7D32" opacity="0.5"/>
+  <!-- Корпус (канистра прямоугольная) -->
+  <rect x="10" y="12" width="52" height="56" rx="6" fill="#E8F5E9"/>
+  <rect x="10" y="12" width="52" height="56" rx="6" fill="none" stroke="#2E7D32" stroke-width="2"/>
+  <!-- Жидкость -->
+  <rect id="a-fill-result" x="12" y="40" width="48" height="26" rx="4" fill="#4CAF50" opacity="0.7"/>
+  <path d="M12 40 Q24 37 36 40 Q48 43 60 40" fill="none" stroke="#4CAF50" stroke-width="1.5" opacity="0.6"/>
+  <!-- Ручка сверху -->
+  <path d="M22 12 Q22 4 36 4 Q50 4 50 12" fill="none" stroke="#2E7D32" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Полоса-этикетка -->
+  <rect x="14" y="22" width="44" height="12" rx="2" fill="#C8E6C9" opacity="0.8"/>
+  <line x1="18" y1="27" x2="54" y2="27" stroke="#2E7D32" stroke-width="1" opacity="0.4"/>
+  <!-- Блик -->
+  <rect x="14" y="16" width="7" height="22" rx="3" fill="white" opacity="0.2"/>
+</svg>
+        </div>
+        <div class="cv-vessel-label" id="a-label-result">—</div>
+        <div class="cv-vessel-name">Итоговый раствор</div>
+      </div>
+    </div>
+
+    <div class="calc-result" id="a-result">
+      <span class="calc-result-placeholder">Заполните поля выше</span>
+    </div>
   </div>
 
 </div>
@@ -777,8 +1237,234 @@ function switchTab(section, btn) {
   document.getElementById('section-' + section).classList.add('active');
 }
 
+
+// ===================== КАЛЬКУЛЯТОР v2 =====================
+
+function switchCalcMode(mode, btn) {
+  var btns = document.querySelectorAll('.calc-mode-btn');
+  var modes = document.querySelectorAll('.calc-mode');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  for (var i = 0; i < modes.length; i++) modes[i].classList.remove('active');
+  btn.classList.add('active');
+  document.getElementById('calc-' + mode).classList.add('active');
+}
+
+function toPercent(val, unit) {
+  return unit === 'mlL' ? val * 0.1 : val;
+}
+
+function fmt(n) {
+  if (isNaN(n) || n < 0) return '—';
+  if (n === 0) return '0';
+  if (n < 0.001) return n.toExponential(2);
+  if (n < 1) return (n * 1000).toFixed(0) + ' мл';
+  if (n < 10) return n.toFixed(2) + ' л';
+  if (n < 1000) return n.toFixed(1) + ' л';
+  return Math.round(n) + ' л';
+}
+
+function fmtShort(n) {
+  if (isNaN(n) || n <= 0) return '—';
+  if (n < 1) return (n * 1000).toFixed(0) + ' мл';
+  if (n < 10) return n.toFixed(2) + ' л';
+  return n.toFixed(1) + ' л';
+}
+
+function setResult(elId, html) {
+  document.getElementById(elId).innerHTML = html;
+}
+
+// Заполняет SVG-ёмкость: fillId — id rect.cv-fill, ratio 0..1
+function setFill(fillId, ratio) {
+  var el = document.getElementById(fillId);
+  if (!el) return;
+  var r = Math.max(0, Math.min(1, ratio));
+  // ёмкости высота от y=14 до y=70 = 56px рабочей зоны
+  var maxH = 54; var topY = 14;
+  var h = Math.round(r * maxH);
+  el.setAttribute('y', (topY + maxH - h).toString());
+  el.setAttribute('height', h.toString());
+}
+
+// Канистра: fillId — rect внутри канистры, y от 12+66=78 вниз, рабочая 60px
+function setConcFill(fillId, ratio) {
+  var el = document.getElementById(fillId);
+  if (!el) return;
+  var r = Math.max(0, Math.min(1, ratio));
+  var maxH = 60; var bottomY = 76;
+  var h = Math.round(r * maxH);
+  el.setAttribute('y', (bottomY - h).toString());
+  el.setAttribute('height', h.toString());
+}
+
+// ── РЕЖИМ 1: Приготовление раствора ───────────────────────
+function calcDilute() {
+  var stockRaw  = parseFloat(document.getElementById('d-conc-stock').value);
+  var targetRaw = parseFloat(document.getElementById('d-conc-target').value);
+  var volume    = parseFloat(document.getElementById('d-volume').value);
+  var unitTarget = document.getElementById('d-unit-target').value;
+
+  var dLabelConc   = document.getElementById('d-label-conc');
+  var dLabelWater  = document.getElementById('d-label-water');
+  var dLabelResult = document.getElementById('d-label-result');
+
+  if (isNaN(stockRaw) || isNaN(targetRaw) || isNaN(volume)) {
+    setResult('d-result', '<span class="calc-result-placeholder">Заполните все поля</span>');
+    dLabelConc.textContent = '—'; dLabelWater.textContent = '—'; dLabelResult.textContent = '—';
+    setConcFill('d-fill-conc', 0.3); setFill('d-fill-water', 0.3); setFill('d-fill-result', 0.5);
+    return;
+  }
+
+  var cStock  = stockRaw; // уже %
+  var cTarget = toPercent(targetRaw, unitTarget);
+
+  if (cTarget >= cStock) {
+    setResult('d-result', '<div class="calc-result-line"><span class="calc-warn">Целевая концентрация не может превышать концентрацию препарата</span></div>');
+    return;
+  }
+
+  var vConc  = (cTarget * volume) / cStock;
+  var vWater = volume - vConc;
+
+  // Пропорции для визуализации
+  var maxVol = volume;
+  setConcFill('d-fill-conc', Math.max(0.05, vConc / maxVol));
+  setFill('d-fill-water', Math.max(0.05, vWater / maxVol));
+  setFill('d-fill-result', 0.92);
+
+  dLabelConc.textContent = fmtShort(vConc);
+  dLabelWater.textContent = fmtShort(vWater);
+  dLabelResult.textContent = fmtShort(volume);
+
+  var unitLabel = unitTarget === 'pct' ? '%' : 'мл/л';
+  setResult('d-result',
+    '<div class="calc-result-line">Концентрат: <strong>' + fmtShort(vConc) + '</strong></div>' +
+    '<div class="calc-result-line">Вода: <strong>' + fmtShort(vWater) + '</strong></div>' +
+    '<div class="calc-result-line" style="font-size:10px;color:rgba(138,154,176,0.7);margin-top:4px">' +
+    'Итого ' + fmtShort(volume) + ' рабочего раствора при концентрации ' + targetRaw + ' ' + unitLabel + '</div>'
+  );
+}
+
+// ── РЕЖИМ 2: Корректировка концентрации ───────────────────
+function calcAdjust() {
+  var stockRaw   = parseFloat(document.getElementById('a-conc-stock').value);
+  var currentRaw = parseFloat(document.getElementById('a-conc-current').value);
+  var targetRaw  = parseFloat(document.getElementById('a-conc-target').value);
+  var volume     = parseFloat(document.getElementById('a-volume').value);
+  var unitCurrent = document.getElementById('a-unit-current').value;
+  var unitTarget  = document.getElementById('a-unit-target').value;
+
+  var aLabelExisting = document.getElementById('a-label-existing');
+  var aLabelAdd      = document.getElementById('a-label-add');
+  var aLabelResult   = document.getElementById('a-label-result');
+  var aOpSign        = document.getElementById('a-op-sign');
+  var aNameAdd       = document.getElementById('a-name-add');
+
+  if (isNaN(stockRaw) || isNaN(currentRaw) || isNaN(targetRaw) || isNaN(volume)) {
+    setResult('a-result', '<span class="calc-result-placeholder">Заполните все поля</span>');
+    aLabelExisting.textContent = '—'; aLabelAdd.textContent = '—'; aLabelResult.textContent = '—';
+    return;
+  }
+
+  var cStock   = stockRaw;
+  var cCurrent = toPercent(currentRaw, unitCurrent);
+  var cTarget  = toPercent(targetRaw, unitTarget);
+  var unitLabel = unitTarget === 'pct' ? '%' : 'мл/л';
+
+  aLabelExisting.textContent = fmtShort(volume);
+
+  if (Math.abs(cTarget - cCurrent) < 0.0001) {
+    setResult('a-result', '<div class="calc-result-line">Концентрация уже соответствует целевой — ничего добавлять не нужно.</div>');
+    aLabelAdd.textContent = '0'; aLabelResult.textContent = fmtShort(volume);
+    return;
+  }
+
+  if (cTarget > cCurrent) {
+    // Добавляем концентрат
+    if (cTarget >= cStock) {
+      setResult('a-result', '<div class="calc-result-line"><span class="calc-warn">Целевая концентрация не может превышать концентрацию препарата</span></div>');
+      return;
+    }
+    var vAdd = (cTarget - cCurrent) * volume / (cStock - cTarget);
+    var vFinal = volume + vAdd;
+
+    aOpSign.textContent = '+';
+    aNameAdd.textContent = 'Добавить концентрат';
+    var iconAdd = document.getElementById('a-icon-add');
+    if (iconAdd) iconAdd.innerHTML = '<svg viewBox=\"0 0 72 72\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M10 10 L10 62 Q10 66 14 66 L52 66 Q56 66 56 62 L56 10 Z\" fill=\"#FDD835\"/> <path d=\"M10 10 L10 62 Q10 66 14 66 L52 66 Q56 66 56 62 L56 10 Z\" fill=\"none\" stroke=\"#1A237E\" stroke-width=\"2.8\" stroke-linejoin=\"round\"/> <path d=\"M56 20 Q64 20 64 30 Q64 40 56 40\" fill=\"none\" stroke=\"#1A237E\" stroke-width=\"2.8\" stroke-linecap=\"round\"/> <line x1=\"34\" y1=\"22\" x2=\"50\" y2=\"22\" stroke=\"#1A237E\" stroke-width=\"3\" stroke-linecap=\"round\"/> <line x1=\"38\" y1=\"30\" x2=\"50\" y2=\"30\" stroke=\"#1A237E\" stroke-width=\"3\" stroke-linecap=\"round\"/> <line x1=\"34\" y1=\"38\" x2=\"50\" y2=\"38\" stroke=\"#1A237E\" stroke-width=\"3\" stroke-linecap=\"round\"/> <line x1=\"38\" y1=\"46\" x2=\"50\" y2=\"46\" stroke=\"#1A237E\" stroke-width=\"3\" stroke-linecap=\"round\"/> <line x1=\"34\" y1=\"54\" x2=\"50\" y2=\"54\" stroke=\"#1A237E\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>';
+    setFill('a-fill-existing', 0.9);
+    setConcFill('a-fill-add', Math.min(1, vAdd / volume * 2));
+    setFill('a-fill-result', 0.92);
+    aLabelAdd.textContent = fmtShort(vAdd);
+    aLabelResult.textContent = fmtShort(vFinal);
+
+    setResult('a-result',
+      '<div class="calc-result-line">Добавить концентрата: <strong>' + fmtShort(vAdd) + '</strong></div>' +
+      '<div class="calc-result-line">Итоговый объём: <strong>' + fmtShort(vFinal) + '</strong></div>' +
+      '<div class="calc-result-line" style="font-size:10px;color:rgba(138,154,176,0.7);margin-top:4px">' +
+      'Концентрация после: ' + targetRaw + ' ' + unitLabel + '</div>'
+    );
+
+  } else {
+    // Разбавляем водой
+    // C1*V1 = C2*V2 => V2 = C1*V1/C2 => добавить воды = V2 - V1
+    var vFinal2 = (cCurrent * volume) / cTarget;
+    var vWaterAdd = vFinal2 - volume;
+
+    if (vWaterAdd <= 0) {
+      setResult('a-result', '<div class="calc-result-line"><span class="calc-warn">Невозможно понизить концентрацию разбавлением в данных условиях</span></div>');
+      return;
+    }
+
+    aOpSign.textContent = '+';
+    aNameAdd.textContent = 'Добавить воду';
+    var iconAdd2 = document.getElementById('a-icon-add');
+    if (iconAdd2) iconAdd2.innerHTML = '<svg viewBox=\"0 0 72 72\" xmlns=\"http://www.w3.org/2000/svg\"> <path d=\"M22 14 Q36 6 50 14\" fill=\"none\" stroke=\"#2D3A8C\" stroke-width=\"4\" stroke-linecap=\"round\"/> <path d=\"M18 20 L12 62 Q12 66 16 66 L56 66 Q60 66 60 62 L54 20 Z\" fill=\"#C8E6FA\"/> <path d=\"M18 20 L12 62 Q12 66 16 66 L56 66 Q60 66 60 62 L54 20 Z\" fill=\"none\" stroke=\"#2D3A8C\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/> <path d=\"M14 46 Q18 42 22 46 Q26 50 30 46 Q34 42 38 46 Q42 50 46 46 Q50 42 54 46 L60 58 Q60 66 56 66 L16 66 Q12 66 12 58 Z\" fill=\"#6BB8F0\"/> <path d=\"M14 46 Q18 42 22 46 Q26 50 30 46 Q34 42 38 46 Q42 50 46 46 Q50 42 54 46\" fill=\"none\" stroke=\"#5AA8E0\" stroke-width=\"1.5\"/> <rect x=\"18\" y=\"20\" width=\"36\" height=\"5\" rx=\"2\" fill=\"#B0D4F0\" opacity=\"0.6\"/></svg>';
+    setFill('a-fill-existing', 0.9);
+    setFill('a-fill-result', 0.92);
+    aLabelAdd.textContent = fmtShort(vWaterAdd);
+    aLabelResult.textContent = fmtShort(vFinal2);
+
+    setResult('a-result',
+      '<div class="calc-result-line">Добавить воды: <strong>' + fmtShort(vWaterAdd) + '</strong></div>' +
+      '<div class="calc-result-line">Итоговый объём: <strong>' + fmtShort(vFinal2) + '</strong></div>' +
+      '<div class="calc-result-line" style="font-size:10px;color:rgba(138,154,176,0.7);margin-top:4px">' +
+      'Концентрация после: ' + targetRaw + ' ' + unitLabel + '</div>'
+    );
+  }
+}
+
+// ── BUBBLES ─────────────────────────────────────────────────
+(function() {
+  var overlay = document.getElementById('bubblesOverlay');
+  if (!overlay) return;
+  var bubbles = [
+    [4,10,9,0.0,8,0.95],[9,16,13,1.2,-8,1.05],[15,7,8,2.5,6,0.9],
+    [21,13,11,0.7,-12,1.0],[27,22,16,3.1,14,1.1],[33,8,9,1.8,-6,0.95],
+    [38,14,12,4.2,9,1.0],[44,6,7,0.3,-5,0.9],[50,19,14,2.0,-10,1.05],
+    [55,10,10,5.0,7,0.95],[60,7,8,1.1,-4,0.9],[66,16,13,3.7,11,1.0],
+    [71,11,11,0.9,-9,0.95],[76,8,9,4.5,6,1.0],[81,20,15,2.3,-13,1.1],
+    [86,7,8,1.6,5,0.9],[91,13,12,3.3,-7,1.0],[96,10,10,0.5,8,0.95],
+    [18,18,14,6.0,-11,1.05],[47,8,9,6.8,6,0.95],[63,12,12,7.2,-8,1.0],
+    [74,6,7,5.5,4,0.9],[84,15,13,6.4,-9,1.0],[30,9,10,7.8,7,0.95]
+  ];
+  bubbles.forEach(function(b) {
+    var el = document.createElement('div');
+    el.className = 'bubble';
+    el.style.left = b[0] + '%';
+    el.style.width = b[1] + 'px';
+    el.style.height = b[1] + 'px';
+    el.style.setProperty('--drift', b[4] + 'px');
+    el.style.setProperty('--end-scale', b[5]);
+    el.style.animationDuration = b[2] + 's';
+    el.style.animationDelay = b[3] + 's';
+    overlay.appendChild(el);
+  });
+})();
+
 renderBasket();
 updateBadges();
+
 </script>
 </body>
 </html>
