@@ -694,16 +694,17 @@
 
   /* DESKTOP */
   @media (min-width: 640px) {
+    .main { padding: 28px 24px 60px; }
     .calc-wrap { padding: 0 24px; }
+
+    .section-tabs { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .tab-btn { padding: 10px 16px; min-height: auto; }
+
     .calc-mode-tabs { flex-direction: row; }
     .calc-mode-btn { border-bottom: none; border-right: 1.5px solid var(--navy); }
     .calc-mode-btn:last-child { border-right: none; }
     .calc-fields { flex-direction: row; flex-wrap: wrap; }
     .calc-field-group { flex: 1; min-width: 160px; }
-  }
-    .main { padding: 28px 24px 60px; }
-    .section-tabs { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .tab-btn { padding: 10px 16px; min-height: auto; }
 
     .product-row { flex-direction: row; align-items: center; gap: 16px; }
     .product-info { flex: 1; min-width: 0; }
@@ -724,12 +725,30 @@
     .extra-fields .field-group input[type='date'] { flex: 1; }
     .extra-fields .field-group textarea { flex: 1; }
 
-    .send-area { flex-direction: row; flex-wrap: wrap; align-items: stretch; }
+    .send-area { flex-direction: row; flex-wrap: nowrap; align-items: stretch; }
     .send-row-main { flex: 1; }
     .btn-email { background: var(--accent); color: var(--white); border: none; }
     .btn-email:hover { background: var(--accent-dim); box-shadow: 0 2px 8px rgba(29,178,227,0.28); }
     .btn-copy:hover { background: var(--navy-deep); }
     .btn-reset { align-self: stretch; height: auto; }
+  }
+
+  /* MOBILE — явные правила для малых экранов */
+  @media (max-width: 639px) {
+    .section-tabs { grid-template-columns: 1fr; gap: 6px; }
+
+    .client-fields { flex-direction: column; gap: 10px; }
+    .client-fields .field-group { width: 100%; }
+
+    .extra-fields { flex-direction: column; gap: 12px; }
+    .extra-fields .field-group { width: 100%; }
+    .extra-fields .field-group input[type='date'] { min-height: 46px; }
+    .extra-fields .field-group textarea { min-height: 80px; }
+
+    .send-area { flex-direction: column; gap: 8px; }
+    .send-row-main { display: flex; gap: 8px; }
+    .send-row-main .btn-send { flex: 1; }
+    .btn-reset { width: 100%; height: 48px; }
   }
 </style>
 </head>
